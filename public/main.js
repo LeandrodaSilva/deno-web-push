@@ -37,7 +37,7 @@ async function handleServiceWorker() {
                 subscription = await serviceWorker.pushManager.getSubscription();
             }
 
-            await fetch('http://localhost:3333/notification/push/register', {
+            await fetch('https://leandrodasi-deno-web-pu-32.deno.dev/notification/push/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ async function handleServiceWorker() {
                 }),
             });
 
-            await fetch('http://localhost:3333/notification/push/send', {
+            await fetch('https://leandrodasi-deno-web-pu-32.deno.dev/notification/push/send', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
