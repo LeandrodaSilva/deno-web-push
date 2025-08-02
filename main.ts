@@ -45,13 +45,7 @@ app.post('/notification/push/register', async (request, response) => {
     await kv.delete(res.key);
   }
 
-  await kv.set(['subscriptions', subscription.endpoint], {
-    endpoint: subscription.endpoint,
-    keys: {
-      p256dh: subscription.keys.p256dh,
-      auth: subscription.keys.auth
-    }
-  });
+  await kv.set(['subscriptions', subscription.endpoint], subscription);
 
   return response.sendStatus(201);
 });
