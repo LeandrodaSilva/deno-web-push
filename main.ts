@@ -15,7 +15,7 @@ const keys = await kv.get<{ publicKey: string; privateKey: string }>(['vapidKeys
 
 let publicKey = '';
 
-if (!keys) {
+if (keys?.value === undefined) {
   console.log('Generating new VAPID keys...');
   const vapidKeys = WebPush.generateVAPIDKeys();
   await kv.set(['vapidKeys'], {
