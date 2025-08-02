@@ -11,12 +11,23 @@ app.use(cors());
 // static files
 app.use(express.static('public'));
 
-const vapidKeys = WebPush.generateVAPIDKeys();
+const keys = await kv.get<{ publicKey: string; privateKey: string }>(['vapidKeys']);
 
-const publicKey = vapidKeys.publicKey
-const privateKey = vapidKeys.privateKey
+let publicKey = '';
 
-WebPush.setVapidDetails('mailto:me@leandrodasilva.dev', publicKey, privateKey);
+if (!keys) {
+  console.log('Generating new VAPID keys...');
+  const vapidKeys = WebPush.generateVAPIDKeys();
+  await kv.set(['vapidKeys'], {
+    publicKey: vapidKeys.publicKey,
+    privateKey: vapidKeys.privateKey,
+  });
+  publicKey = vapidKeys.publicKey;
+  WebPush.setVapidDetails('mailto:me@leandrodasilva.dev', vapidKeys.publicKey, vapidKeys.privateKey);
+} else {
+  publicKey = keys?.value?.publicKey || '';
+  WebPush.setVapidDetails('mailto:me@leandrodasilva.dev', keys?.value?.publicKey, keys?.value?.privateKey);
+}
 
 interface ISubscription {
   subscription: {
