@@ -95,6 +95,7 @@ app.post('/notification/push/send', async (request: Request, response: Response)
       );
     } catch (error) {
       console.error(`Failed to send notification to ${sub.value.endpoint}:`, error);
+      await kv.delete(sub.key);
     }
   }
   return response.sendStatus(201);
