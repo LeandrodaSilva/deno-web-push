@@ -46,22 +46,27 @@ async function handleServiceWorker() {
                     subscription,
                 }),
             });
-
-            await fetch('https://leandrodasi-deno-web-pu-32.deno.dev/notification/push/send', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    subscription,
-                }),
-            });
         });
 }
 
 
 document.addEventListener('DOMContentLoaded', () => {
     const notifyButton = document.getElementById('notify-button');
+    const notifyButtonSend = document.getElementById('notify-button-send');
+    if (notifyButtonSend) {
+        notifyButtonSend.addEventListener('click', () => {
+            fetch('https://leandrodasi-deno-web-pu-32.deno.dev/notification/push/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "title": "Test Notification",
+                    "body": "This is a test notification",
+                }),
+            });
+        });
+    }
     if (notifyButton) {
         notifyButton.addEventListener('click', notifyMe);
     } else {

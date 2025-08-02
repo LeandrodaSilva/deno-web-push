@@ -2,6 +2,8 @@ import express from "npm:express"
 import cors from 'npm:cors';
 import WebPush from 'npm:web-push';
 
+const kv = await Deno.openKv();
+
 const app = express();
 
 app.use(express.json());
@@ -28,25 +30,66 @@ app.get('/notification/push/public_key', (request, response) => {
   return response.json({ publicKey });
 });
 
-app.post('/notification/push/register', (request, response) => {
+app.post('/notification/push/register', async (request, response) => {
   console.log(request.body);
+
+  const { subscription } = request.body as ISubscription;
+
+  if (!subscription || !subscription.endpoint) {
+    return response.status(400).json({ error: 'Invalid subscription data' });
+  }
+
+  await kv.set(['subscriptions', subscription.endpoint], {
+    endpoint: subscription.endpoint,
+    keys: {
+      p256dh: subscription.keys.p256dh,
+      auth: subscription.keys.auth
+    }
+  });
 
   return response.sendStatus(201);
 });
 
+interface IDataSubscription {
+  endpoint: string;
+  keys: {
+    p256dh: string;
+    auth: string;
+  };
+}
+
 app.post('/notification/push/send', async (request, response) => {
-  const { subscription } = request.body as ISubscription;
+  const { title, body } = request.body as {
+    title: string;
+    body: string;
+  };
 
-  WebPush.sendNotification(
-    subscription,
-    JSON.stringify({
-      icon: 'your-icon-link.png',
-      title: 'Your title',
-      body: 'Content of your message',
-      imageUrl: 'your-image-link.png'
-    }),
-  );
+  const subscriptions = [];
 
+  for await (const [key, value] of kv.list<IDataSubscription>({ prefix: ['subscriptions'] })) {
+    subscriptions.push(value);
+  }
+
+  if (!subscriptions.length) {
+    return response.status(404).json({ error: 'No subscriptions found' });
+  }
+
+  // Send notification to all subscriptions
+  for (const sub of subscriptions) {
+    try {
+      await WebPush.sendNotification(
+        sub,
+        JSON.stringify({
+          icon: 'your-icon-link.png',
+          title,
+          body,
+          imageUrl: 'your-image-link.png'
+        }),
+      );
+    } catch (error) {
+      console.error(`Failed to send notification to ${sub.endpoint}:`, error);
+    }
+  }
   return response.sendStatus(201);
 });
 
