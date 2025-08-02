@@ -82,9 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 position: "top-end",
                 text: payload.body,
                 icon: 'info',
-                imageUrl: payload.imageUrl,
                 showConfirmButton: false,
-                timer: 1500
+                timer: 2000
             });
         }
     });
