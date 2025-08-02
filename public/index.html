@@ -6,19 +6,17 @@
     <title>POC Web Push</title>
 </head>
 <body>
-<section>
+<div class="notice">
     <fieldset>
         <legend>1. Primeiro autorize as notificações</legend>
         <button id="notify-button">Autorizar Notificações</button>
     </fieldset>
-</section>
-<section>
     <fieldset>
         <legend>2. Envie a notificação para todos os assinantes</legend>
         <input type="text" id="notify-text" name="body" value="Mensagem">
         <button id="notify-button-send">Enviar Notificação</button>
     </fieldset>
-</section>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/main.js" type="module"></script>
 </body>
