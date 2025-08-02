@@ -8,5 +8,17 @@ self.addEventListener('push', (event) => {
             image: notificationPayload.imageUrl
         }),
     );
+
+    // Enviar mensagem para todas as abas abertas
+    event.waitUntil(
+        self.clients.matchAll().then(clients => {
+            clients.forEach(client => {
+                client.postMessage({
+                    type: 'SHOW_SWEET_ALERT',
+                    payload: notificationPayload
+                });
+            });
+        })
+    );
 });
 

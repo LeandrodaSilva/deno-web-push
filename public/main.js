@@ -72,4 +72,18 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         console.error('Notify button not found');
     }
+
+    navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data.type === 'SHOW_SWEET_ALERT') {
+            const { payload } = event.data;
+
+            Swal.fire({
+                title: payload.title,
+                text: payload.body,
+                icon: 'info',
+                imageUrl: payload.imageUrl,
+                confirmButtonText: 'OK'
+            });
+        }
+    });
 })
