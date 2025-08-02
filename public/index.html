@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-  <title>POC Web Push</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <title>POC Web Push</title>
 </head>
 <body>
 <section>
-  <button id="notify-button">Autorizar Notificações</button>
+    <fieldset>
+        <legend>1. Primeiro autorize as notificações</legend>
+        <button id="notify-button">Autorizar Notificações</button>
+    </fieldset>
 </section>
 <section>
-  <input type="text" id="notify-text" value="Mensagem">
-  <button id="notify-button-send">Enviar Notificação</button>
+    <fieldset>
+        <legend>2. Envie a notificação para todos os assinantes</legend>
+        <input type="text" id="notify-text" name="body" value="Mensagem">
+        <button id="notify-button-send">Enviar Notificação</button>
+    </fieldset>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/main.js" type="module"></script>
