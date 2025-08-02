@@ -2,10 +2,138 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="POC Web Push Notifications">
+    <meta name="keywords" content="Web Push, Notifications, POC">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Web Push">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="msapplication-TileImage" content="/icons/icon-144x144.png">
+    
+    <!-- Icons -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/icons/icon-192x192.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png">
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <style>
+        /* Window Controls Overlay Styles */
+        .title-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 32px;
+            background-color: #212121;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            z-index: 1000;
+            -webkit-app-region: drag;
+            user-select: none;
+        }
+        
+        .title-bar-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+        
+        .app-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+        
+        .app-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .title-bar-actions {
+            display: flex;
+            gap: 8px;
+            -webkit-app-region: no-drag;
+        }
+        
+        .title-bar-button {
+            background: none;
+            border: none;
+            color: inherit;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .title-bar-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Adjust main content to account for title bar */
+        body {
+            padding-top: 32px;
+        }
+        
+        /* Hide title bar when not in window controls overlay mode */
+        @media (display-mode: standalone) {
+            .title-bar {
+                display: none;
+            }
+            body {
+                padding-top: 0;
+            }
+        }
+        
+        /* Show title bar only in window controls overlay mode */
+        @media (display-mode: window-controls-overlay) {
+            .title-bar {
+                display: flex;
+            }
+            body {
+                padding-top: 32px;
+            }
+        }
+        
+        /* Responsive adjustments for window controls overlay */
+        @media (display-mode: window-controls-overlay) {
+            .title-bar {
+                /* Use environment variables for safe areas */
+                padding-left: max(16px, env(titlebar-area-x, 16px));
+                padding-right: max(16px, calc(100vw - env(titlebar-area-x, 0px) - env(titlebar-area-width, 100vw) + 16px));
+                width: env(titlebar-area-width, 100vw);
+                left: env(titlebar-area-x, 0);
+                height: env(titlebar-area-height, 32px);
+            }
+        }
+    </style>
     <title>POC Web Push</title>
 </head>
 <body>
+    <!-- Title Bar for Window Controls Overlay -->
+    <header class="title-bar">
+        <div class="title-bar-content">
+            <img src="/icons/icon-96x96.png" alt="App Icon" class="app-icon">
+            <h1 class="app-title">Web Push Demo</h1>
+        </div>
+        <div class="title-bar-actions">
+            <button class="title-bar-button" id="refresh-button" title="Refresh">↻</button>
+            <button class="title-bar-button" id="settings-button" title="Settings">⚙</button>
+        </div>
+    </header>
 <div class="notice">
     <fieldset>
         <legend>1. Primeiro autorize as notificações</legend>
