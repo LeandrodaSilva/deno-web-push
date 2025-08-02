@@ -53,6 +53,7 @@ async function handleServiceWorker() {
 document.addEventListener('DOMContentLoaded', () => {
     const notifyButton = document.getElementById('notify-button');
     const notifyButtonSend = document.getElementById('notify-button-send');
+    const notifyText = document.getElementById('notify-text');
     if (notifyButtonSend) {
         notifyButtonSend.addEventListener('click', () => {
             fetch('https://leandrodasi-deno-web-pu-32.deno.dev/notification/push/send', {
@@ -62,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify({
                     "title": "Test Notification",
-                    "body": "This is a test notification",
+                    "body": notifyText.value || "This is a test notification",
                 }),
             });
         });

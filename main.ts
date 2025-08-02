@@ -112,4 +112,4 @@ app.post('/notification/push/send', async (request: Request, response: Response)
   return response.sendStatus(201);
 });
 
-app.listen();
+app.listen(Deno.env.get('PORT') || 8080);
