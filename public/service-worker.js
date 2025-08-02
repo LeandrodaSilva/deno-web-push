@@ -6,8 +6,8 @@ const urlsToCache = [
     '/manifest.json',
     '/icons/icon-192x192.png',
     '/icons/icon-512x512.png',
-    'https://cdn.simplecss.org/simple.min.css',
-    'https://cdn.jsdelivr.net/npm/sweetalert2@11'
+    // 'https://cdn.simplecss.org/simple.min.css',
+    // 'https://cdn.jsdelivr.net/npm/sweetalert2@11'
 ];
 
 // Install event - cache static assets
