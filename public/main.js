@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    "title": "Test Notification",
+                    "title": "Notificação",
                     "body": notifyText.value || "This is a test notification",
                 }),
             });
