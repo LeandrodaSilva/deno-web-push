@@ -11,22 +11,33 @@ app.use(cors());
 // static files
 app.use(express.static('public'));
 
-const keys = await kv.get<{ publicKey: string; privateKey: string }>(['vapidKeys']);
-
 let publicKey = '';
 
-if (keys?.value === undefined) {
-  console.log('Generating new VAPID keys...');
+try {
+  const keys = await kv.get<{ publicKey: string; privateKey: string }>(['vapidKeys']);
+
+
+  if (keys?.value === undefined) {
+    console.log('Generating new VAPID keys...');
+    const vapidKeys = WebPush.generateVAPIDKeys();
+    await kv.set(['vapidKeys'], {
+      publicKey: vapidKeys.publicKey,
+      privateKey: vapidKeys.privateKey,
+    });
+    publicKey = vapidKeys.publicKey;
+    WebPush.setVapidDetails('mailto:me@leandrodasilva.dev', vapidKeys.publicKey, vapidKeys.privateKey);
+  } else {
+    publicKey = keys?.value?.publicKey || '';
+    WebPush.setVapidDetails('mailto:me@leandrodasilva.dev', keys?.value?.publicKey, keys?.value?.privateKey);
+  }
+} catch (error) {
+  console.error('Error generating or retrieving VAPID keys:', error);
   const vapidKeys = WebPush.generateVAPIDKeys();
+  WebPush.setVapidDetails('mailto:me@leandrodasilva.dev', vapidKeys.publicKey, vapidKeys.privateKey);
   await kv.set(['vapidKeys'], {
     publicKey: vapidKeys.publicKey,
     privateKey: vapidKeys.privateKey,
   });
-  publicKey = vapidKeys.publicKey;
-  WebPush.setVapidDetails('mailto:me@leandrodasilva.dev', vapidKeys.publicKey, vapidKeys.privateKey);
-} else {
-  publicKey = keys?.value?.publicKey || '';
-  WebPush.setVapidDetails('mailto:me@leandrodasilva.dev', keys?.value?.publicKey, keys?.value?.privateKey);
 }
 
 interface ISubscription {
