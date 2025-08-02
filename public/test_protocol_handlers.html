@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocol Handlers Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-link {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin: 5px;
+        }
+        .test-link:hover {
+            background-color: #0056b3;
+        }
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Protocol Handlers Test Page</h1>
+    <p>Esta página permite testar os gerenciadores de protocolos personalizados definidos no manifesto da aplicação.</p>
+    
+    <div class="test-section">
+        <h2>Web Push Protocol (web+webpush://)</h2>
+        <p>Testa o protocolo <code>web+webpush</code> com diferentes ações:</p>
+        <a href="/public?protocol=webpush&action=subscribe" class="test-link">Test Subscribe Action</a>
+        <a href="/public?protocol=webpush&action=unsubscribe" class="test-link">Test Unsubscribe Action</a>
+        <a href="/public?protocol=webpush&action=status" class="test-link">Test Status Action</a>
+    </div>
+    
+    <div class="test-section">
+        <h2>Notify Protocol (web+notify://)</h2>
+        <p>Testa o protocolo <code>web+notify</code> com diferentes mensagens:</p>
+        <a href="/public?protocol=notify&message=Hello%20World!" class="test-link">Test Simple Message</a>
+        <a href="/public?protocol=notify&message=Notification%20from%20protocol%20handler" class="test-link">Test Long Message</a>
+        <a href="/public?protocol=notify&message=Teste%20em%20português" class="test-link">Test Portuguese Message</a>
+    </div>
+    
+    <div class="test-section">
+        <h2>Push Notification Protocol (web+pushnotification://)</h2>
+        <p>Testa o protocolo <code>web+pushnotification</code> com dados JSON:</p>
+        <a href="/public?protocol=pushnotification&data=%7B%22title%22%3A%22Test%20Notification%22%2C%22body%22%3A%22This%20is%20a%20test%20notification%22%7D" class="test-link">Test JSON Data</a>
+        <a href="/public?protocol=pushnotification&data=%7B%22title%22%3A%22Urgent%22%2C%22body%22%3A%22Important%20message%22%7D" class="test-link">Test Urgent Notification</a>
+        <a href="/public?protocol=pushnotification&data=invalid-json" class="test-link">Test Invalid JSON</a>
+    </div>
+    
+    <div class="test-section">
+        <h2>Como usar os protocolos personalizados</h2>
+        <p>Depois que a aplicação for instalada como PWA, você poderá usar os seguintes protocolos:</p>
+        <ul>
+            <li><code>web+webpush://subscribe</code> - Para ações relacionadas ao web push</li>
+            <li><code>web+notify://Hello%20World</code> - Para enviar notificações rápidas</li>
+            <li><code>web+pushnotification://{"title":"Test","body":"Message"}</code> - Para notificações com dados estruturados</li>
+        </ul>
+        <p><strong>Nota:</strong> Os protocolos personalizados só funcionam quando a aplicação está instalada como PWA.</p>
+    </div>
+    
+    <div class="test-section">
+        <h2>Voltar para a aplicação</h2>
+        <a href="/public" class="test-link">Voltar para Web Push Demo</a>
+    </div>
+</body>
+</html>
