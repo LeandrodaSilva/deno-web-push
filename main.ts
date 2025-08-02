@@ -11,10 +11,12 @@ app.use(cors());
 // static files
 app.use(express.static('public'));
 
-const publicKey = 'BMODaWYT3dMP3lgZrMPqICBBxS-iEOUUFnmOmwk9x8au2FAmVP5yPRTgFTW0pfgDQ25IKl5BSrJHO5l7cT59UO0';
-const privateKey = 'R1O8Et-7g2DgJBFSfCFNeXjig2_Or5mmRZVwUXl3j2w';
+const vapidKeys = WebPush.generateVAPIDKeys();
 
-WebPush.setVapidDetails('https://tidy-cobra-84.deno.dev', publicKey, privateKey);
+const publicKey = vapidKeys.publicKey
+const privateKey = vapidKeys.privateKey
+
+WebPush.setVapidDetails('mailto:me@leandrodasilva.dev', publicKey, privateKey);
 
 interface ISubscription {
   subscription: {
