@@ -9,7 +9,7 @@
     
     <!-- PWA Meta Tags -->
     <meta name="theme-color" content="#000000">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Web Push">
     <meta name="msapplication-TileColor" content="#000000">
@@ -22,6 +22,7 @@
     <link rel="apple-touch-icon" sizes="152x152" href="/icons/icon-152x152.png">
     <link rel="apple-touch-icon" sizes="192x192" href="/icons/icon-192x192.png">
     <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+    <script src="https://unpkg.com/pwa-install@2.0.1/pwa-install.min.js"></script>
     <style>
         /* Window Controls Overlay Styles */
         .title-bar {
@@ -139,14 +140,23 @@
         <legend>1. Primeiro autorize as notificações</legend>
         <button id="notify-button">Autorizar Notificações</button>
     </fieldset>
+
     <fieldset>
         <legend>2. Envie a notificação para todos os assinantes</legend>
         <input type="text" id="notify-text" name="body" value="Mensagem">
         <button id="notify-button-send">Enviar Notificação</button>
     </fieldset>
 
+<!--    Instalação do PWA usando o <pwa-install/>-->
     <fieldset>
-        <legend>3. Teste os manipuladores de protocolo</legend>
+        <legend>3. Instale o PWA</legend>
+        <p>Instale o PWA no dispositivos móveis IOS (Desktop não
+            é necessário) para receber notificações mesmo quando o navegador estiver fechado. </p>
+        <pwa-install></pwa-install>
+    </fieldset>
+
+    <fieldset>
+        <legend>4. Teste os manipuladores de protocolo</legend>
         <a href="/test_protocol_handlers.html" class="test-link">Testar Manipuladores de Protocolo</a>
     </fieldset>
 </div>
