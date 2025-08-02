@@ -1,4 +1,4 @@
-import express from "npm:express"
+import express, { Request, Response } from "npm:express"
 import cors from 'npm:cors';
 import WebPush from 'npm:web-push';
 
@@ -26,11 +26,11 @@ interface ISubscription {
   };
 }
 
-app.get('/notification/push/public_key', (request, response) => {
+app.get('/notification/push/public_key', (request: Request, response: Response) => {
   return response.json({ publicKey });
 });
 
-app.post('/notification/push/register', async (request, response) => {
+app.post('/notification/push/register', async (request: Request, response: Response) => {
   console.log(request.body);
 
   const { subscription } = request.body as ISubscription;
@@ -58,7 +58,7 @@ interface IDataSubscription {
   };
 }
 
-app.post('/notification/push/send', async (request, response) => {
+app.post('/notification/push/send', async (request: Request, response: Response) => {
   const { title, body } = request.body as {
     title: string;
     body: string;
@@ -93,5 +93,4 @@ app.post('/notification/push/send', async (request, response) => {
   return response.sendStatus(201);
 });
 
-
-app.listen(3000);
+app.listen();
