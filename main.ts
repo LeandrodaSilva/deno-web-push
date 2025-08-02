@@ -39,6 +39,12 @@ app.post('/notification/push/register', async (request, response) => {
     return response.status(400).json({ error: 'Invalid subscription data' });
   }
 
+  const iter = kv.list<IDataSubscription>({ prefix: ["subscriptions"] });
+
+  for await (const res of iter) {
+    await kv.delete(res.key);
+  }
+
   await kv.set(['subscriptions', subscription.endpoint], {
     endpoint: subscription.endpoint,
     keys: {
@@ -66,9 +72,9 @@ app.post('/notification/push/send', async (request, response) => {
 
   const subscriptions = [];
 
-  for await (const [key, value] of kv.list<IDataSubscription>({ prefix: ['subscriptions'] })) {
-    subscriptions.push(value);
-  }
+  const iter = kv.list<IDataSubscription>({ prefix: ["subscriptions"] });
+
+  for await (const res of iter) subscriptions.push(res);
 
   if (!subscriptions.length) {
     return response.status(404).json({ error: 'No subscriptions found' });
@@ -78,7 +84,7 @@ app.post('/notification/push/send', async (request, response) => {
   for (const sub of subscriptions) {
     try {
       await WebPush.sendNotification(
-        sub,
+        sub.value,
         JSON.stringify({
           icon: 'your-icon-link.png',
           title,
@@ -87,7 +93,7 @@ app.post('/notification/push/send', async (request, response) => {
         }),
       );
     } catch (error) {
-      console.error(`Failed to send notification to ${sub.endpoint}:`, error);
+      console.error(`Failed to send notification to ${sub.value.endpoint}:`, error);
     }
   }
   return response.sendStatus(201);
