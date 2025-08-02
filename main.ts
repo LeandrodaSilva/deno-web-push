@@ -41,12 +41,6 @@ app.post('/notification/push/register', async (request: Request, response: Respo
     return response.status(400).json({ error: 'Invalid subscription data' });
   }
 
-  const iter = kv.list<IDataSubscription>({ prefix: ["subscriptions"] });
-
-  for await (const res of iter) {
-    await kv.delete(res.key);
-  }
-
   await kv.set(['subscriptions', subscription.endpoint], subscription);
 
   return response.sendStatus(201);
