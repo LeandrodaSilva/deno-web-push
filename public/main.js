@@ -79,10 +79,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             Swal.fire({
                 title: payload.title,
+                position: "top-end",
                 text: payload.body,
                 icon: 'info',
                 imageUrl: payload.imageUrl,
-                confirmButtonText: 'OK'
+                showConfirmButton: false,
+                timer: 1500
             });
         }
     });
